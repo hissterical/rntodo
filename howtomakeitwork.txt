@@ -1,0 +1,28 @@
+first, turn newArchEnabled false in gradle.properties
+
+//removed this
+then i added 
+include ':react-native-voice'
+project(':react-native-voice').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-voice/voice/android')
+in settings.gradle
+
+then i did ./gradlew clean a bunch of times. 
+
+
+//removed this
+then added 
+implementation project(':react-native-voice')
+in android/app/build.gradle
+
+added 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+in main/AndroidManifest.xml
+
+
+added 
+android.enableJetifier=true
+to gradle.properties. 
+
+
+
+now did yarn add jetify
