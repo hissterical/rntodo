@@ -2,74 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, TextInput, Alert, Linking } from "react-native";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import {
-//   ExpoSpeechRecognitionModule,
-//   useSpeechRecognitionEvent,
-// } from "expo-speech-recognition";
 import { sendToLLM } from "../api/Gemini";
+import SpeechToText from "../components/SpeechToText";
 
 export default function MainPage() {
   const [userMsg, setUserMsg] = useState("");
   const [tasks, setTasks] = useState([]);
   const [llmMessage, setLlmMessage] = useState("");
-  // const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
-
-  // useSpeechRecognitionEvent("start", () => setRecognizing(true));
-  // useSpeechRecognitionEvent("end", () => {
-  //   setRecognizing(false);
-  //   handleSTTComplete();
-  // });
-  // useSpeechRecognitionEvent("result", (event) => {
-  //   setTranscript(event.results[0]?.transcript);
-  // });
-  // useSpeechRecognitionEvent("error", (event) => {
-  //   console.log("GOT ERROR", event.error);
-  // });
-
-  // const handleStart = async () => {
-  //   const result = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
-  
-  //   if (!result.granted) {
-  //     if (result.canAskAgain) {
-  //       Alert.alert(
-  //         "Permission Required",
-  //         "We need access to the microphone to use speech recognition."
-  //       );
-  //     } else {
-  //       Alert.alert(
-  //         "Permission Denied",
-  //         "Microphone access has been denied. Please enable it in your device settings.",
-  //         [
-  //           {
-  //             text: "Cancel",
-  //             style: "cancel",
-  //           },
-  //           {
-  //             text: "Open Settings",
-  //             onPress: () => Linking.openSettings(),
-  //           },
-  //         ]
-  //       );
-  //     }
-  //     return;
-  //   }
-  
-  //   ExpoSpeechRecognitionModule.start({
-  //     lang: "en-US",
-  //     interimResults: true,
-  //     maxAlternatives: 1,
-  //     continuous: false, // End session after a single recognition
-  //     requiresOnDeviceRecognition: false,
-  //     addsPunctuation: true, // Adds punctuation to the transcript
-  //   });
-  // };
-  // const handleSTTComplete = () => {
-  //   if (transcript.trim()) {
-  //     sendToLLM(transcript);
-  //     setTranscript("");
-  //   }
-  // };
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -97,19 +37,16 @@ export default function MainPage() {
     setLlmMessage(tasksJson.message); // Update LLM message
   };
 
+  const onTranscriptChange = (transcript) => { 
+    setTranscript(transcript);
+    sendToLLM(transcript, addTasksMain);
+  }
+
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.text}>Welcome to the GAY Page!</Text>
-      <Button
-        title={!recognizing ? "Start" : "Stop"}
-        onPress={() => {
-          if (!recognizing) {
-            handleStart();
-          } else {
-            ExpoSpeechRecognitionModule.stop();
-          }
-        }}
-      />*/}
+
+      <SpeechToText onTextChange={onTranscriptChange} />
+
 
     <GestureHandlerRootView>
       <ScrollView>

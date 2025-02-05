@@ -1,13 +1,11 @@
 // src/screens/SettingsPage.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import SpeechToText from '../components/SpeechToText';
 
 export const SettingsPage = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bettigns</Text>
-      <SpeechToText />
+        <Text style={styles.title}> BETTINGS </Text>
     </View>
   );
 };

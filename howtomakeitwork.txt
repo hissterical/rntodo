@@ -1,3 +1,6 @@
+ignore all of this now. 
+
+
 first, turn newArchEnabled false in gradle.properties
 
 //removed this
