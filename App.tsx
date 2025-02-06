@@ -1,13 +1,16 @@
 // App.tsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { AppNavigator } from './src/navigation/AppNavigator';
+import {NavigationContainer} from '@react-navigation/native';
+import {AppNavigator} from './src/navigation/AppNavigator';
+import {ThemeProvider} from './src/context/ThemeContext';
 
 function App() {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 

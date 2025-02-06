@@ -4,12 +4,16 @@ import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { sendToLLM } from "../api/Gemini";
 import SpeechToText from "../components/SpeechToText";
+import { useTheme } from '../context/ThemeContext';
 
 export default function MainPage() {
   const [userMsg, setUserMsg] = useState("");
   const [tasks, setTasks] = useState([]);
   const [llmMessage, setLlmMessage] = useState("");
   const [transcript, setTranscript] = useState("");
+
+  const {theme} = useTheme();
+  const styles = createStyles(theme);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -45,7 +49,7 @@ export default function MainPage() {
   return (
     <View style={styles.container}>
 
-      <SpeechToText onTextChange={onTranscriptChange} />
+      <SpeechToText onTextChange={onTranscriptChange} theme={theme}/>
 
 
     <GestureHandlerRootView>
@@ -53,6 +57,7 @@ export default function MainPage() {
         <Text>{transcript}</Text>
       </ScrollView>
       <TextInput
+        placeholderTextColor={theme === 'dark' ? '#71717A' : '#A1A1AA'}
         style={styles.input}
         value={userMsg}
         onChangeText={(text) => setUserMsg(text)}
@@ -71,28 +76,31 @@ export default function MainPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: theme === 'dark' ? '#2A2B2E' : '#ccc',
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
-    backgroundColor: "#fff",
+    backgroundColor: theme === 'dark' ? '#1A1B1E' : '#fff',
+    color: theme === 'dark' ? '#fff' : '#000',
     width: 300,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: theme === 'dark' ? '#1A1B1E' : '#fff',
   },
   text: {
     fontSize: 24,
+    color: theme === 'dark' ? '#fff' : '#000',
   },
   llmMessage: {
     marginTop: 20,
     fontSize: 18,
-    color: "gray",
+    color: theme === 'dark' ? '#A1A1AA' : 'gray',
     textAlign: "center",
   },
 });

@@ -1,24 +1,22 @@
-// src/screens/SettingsPage.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { createGlobalStyles } from '../styles/GlobalStyles';
 
-export const SettingsPage = () => {
+const SettingsPage = () => {
+  const { theme, toggleTheme } = useTheme();
+  const styles = createGlobalStyles(theme);
+
   return (
     <View style={styles.container}>
-        <Text style={styles.title}> BETTINGS </Text>
+      <Text style={styles.heading}>Settings</Text>
+      <TouchableOpacity style={styles.button} onPress={toggleTheme}>
+        <Text style={styles.buttonText}>
+          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
+export {SettingsPage};

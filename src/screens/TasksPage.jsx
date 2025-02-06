@@ -7,10 +7,15 @@ import TaskItem from "../components/TaskItem";
 import TaskInput from "../components/TaskInput";
 import addTask from "../utils/TaskUtils"; // Keep the utility function
 
+import { useTheme } from "../context/ThemeContext";
+
 export default function TasksPage() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const isFocused = useIsFocused(); // Get the focused state of the screen
+  
+  const {theme} = useTheme();
+  const styles = createStyles(theme);
 
   const loadTasks = async () => {
     const savedTasks = await AsyncStorage.getItem("tasks");
@@ -59,6 +64,7 @@ export default function TasksPage() {
             task={item}
             toggleCompletion={toggleTaskCompletion}
             deleteTask={deleteTask}
+            theme={theme}
           />
         )}
       />
@@ -66,10 +72,11 @@ export default function TasksPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (mode) => StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 10,
+    backgroundColor: mode === 'dark' ? '#1A1B1E' : '#fff',
   },
 });

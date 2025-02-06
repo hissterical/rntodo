@@ -2,9 +2,9 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-const TaskItem = ({ task, toggleCompletion, deleteTask }) => {
+const TaskItem = ({ task, toggleCompletion, deleteTask, theme }) => {
   return (
-    <View style={styles.taskContainer}>
+    <View style={[styles.taskContainer, theme==='dark' && styles.darkContainer]}>
       <TouchableOpacity style={styles.completeButton} onPress={() => toggleCompletion(task.id)}>
         <Text style={styles.buttonText}>{task.completed ? "[X]" : "[   ]"}</Text>
       </TouchableOpacity>
@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#ccc',
+  },
+  darkContainer: {
+    backgroundColor: '#c5c96d'
   },
   task: {
     fontSize: 18,
