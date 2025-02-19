@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native"; // Import useIsFocused
+import { createGlobalStyles } from "../styles/GlobalStyles";
 
 import TaskItem from "../components/TaskItem";
 import TaskInput from "../components/TaskInput";
@@ -15,7 +16,7 @@ export default function TasksPage() {
   const isFocused = useIsFocused(); // Get the focused state of the screen
   
   const {theme} = useTheme();
-  const styles = createStyles(theme);
+  const styles = createGlobalStyles(theme);
 
   const loadTasks = async () => {
     const savedTasks = await AsyncStorage.getItem("tasks");
@@ -71,12 +72,3 @@ export default function TasksPage() {
     </View>
   );
 }
-
-const createStyles = (mode) => StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    paddingHorizontal: 10,
-    backgroundColor: mode === 'dark' ? '#1A1B1E' : '#fff',
-  },
-});

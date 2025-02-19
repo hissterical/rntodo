@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import Voice from '@react-native-voice/voice';
+import React, { useState, useEffect } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import Voice from "@react-native-voice/voice";
 
 const SpeechToText = ({ onTextChange, theme }) => {
   const [text, setText] = useState('');
@@ -9,10 +9,23 @@ const SpeechToText = ({ onTextChange, theme }) => {
   useEffect(() => {
     Voice.onSpeechStart = () => setIsListening(true);
     Voice.onSpeechEnd = () => setIsListening(false);
-    Voice.onSpeechResults = (e) => {
-      setText(e.value.join(' '));
-      if (onTextChange) onTextChange(e.value.join(' '));
+    
+    // Capture partial results for real-time updates
+    Voice.onSpeechPartialResults = (e) => {
+      if (e.value && e.value.length > 0) {
+        setText(e.value.join(' ')); // Show words as user speaks
+        if (onTextChange) onTextChange(e.value.join(' ')); 
+      }
     };
+
+    // Capture final results
+    Voice.onSpeechResults = (e) => {
+      if (e.value && e.value.length > 0) {
+        setText(e.value.join(' ')); // Replace text instead of appending
+        if (onTextChange) onTextChange(e.value.join(' ')); 
+      }
+    };    
+
     return () => Voice.destroy().then(Voice.removeAllListeners);
   }, []);
 
