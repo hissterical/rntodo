@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainPage from '../screens/MainPage';
 import TasksPage from '../screens/TasksPage';
+import NotesPage from '../screens/NotesPage';
 import { SettingsPage } from '../screens/SettingsPage';
 import { navBarOptions } from './navBarOptions';
 import { useTheme } from '../context/ThemeContext';
@@ -15,6 +16,11 @@ export const AppNavigator = () => {
     <Tab.Navigator
       screenOptions={(props) => navBarOptions(theme, props)}  // Pass theme here
     >
+      <Tab.Screen 
+        name="Notes" 
+        component={NotesPage} 
+        options={{ title: 'Notes' }}
+      />
       <Tab.Screen 
         name="Home" 
         component={MainPage} 

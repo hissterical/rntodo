@@ -8,6 +8,8 @@ const navBarOptions = (theme, {route}) => ({
       iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === 'Tasks') {
       iconName = focused ? 'list' : 'list-outline';
+    } else if (route.name === 'Notes') {
+      iconName = focused ? 'journal' : 'journal-outline';
     } else if (route.name === 'Settings') {
       iconName = focused ? 'settings' : 'settings-outline';
     }
