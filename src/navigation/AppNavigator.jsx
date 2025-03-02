@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainPage from '../screens/MainPage';
 import TasksPage from '../screens/TasksPage';
-import NotesPage from '../screens/NotesPage';
+import NotesScreen from '../screens/NotesPage';
 import { SettingsPage } from '../screens/SettingsPage';
 import { navBarOptions } from './navBarOptions';
 import { useTheme } from '../context/ThemeContext';
@@ -18,7 +18,7 @@ export const AppNavigator = () => {
     >
       <Tab.Screen 
         name="Notes" 
-        component={NotesPage} 
+        component={NotesScreen} 
         options={{ title: 'Notes' }}
       />
       <Tab.Screen 
