@@ -40,38 +40,41 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-export const sendToLLM = async (userMsg, addTasksMain) => {
-    if (!userMsg.trim()) {
-        Alert.alert("Input Required", "Please enter a message to process.");
-        return;
-    }
-
+export const sendToLLM = async (userMsg, addTasksMain, setIsProcessing) => {
+  if (!userMsg.trim()) {
+    Alert.alert("Input Required", "Please enter a message to process.");
+    return;
+  }
+  
+  setIsProcessing(true);
+  
+  try {
+    const chatSession = model.startChat({
+      generationConfig,
+      history: [],
+    });
+    const result = await chatSession.sendMessage(prompt + userMsg);
+    const responseJSON = result.response
+      .text()
+      .replace(/`{3}json|`{3}/g, "")
+      .trim();
     try {
-        const chatSession = model.startChat({
-        generationConfig,
-        history: [],
-        });
-        const result = await chatSession.sendMessage(prompt + userMsg);
-        const responseJSON = result.response
-        .text()
-        .replace(/`{3}json|`{3}/g, "")
-        .trim();
-
-        try {
-        const parsedResponse = JSON.parse(responseJSON);
-        addTasksMain(parsedResponse);
-        } catch (error) {
-        console.error("Error parsing the JSON response:", error);
-        Alert.alert(
-            "Error",
-            "Failed to process the response. Please try again."
-        );
-        }
+      const parsedResponse = JSON.parse(responseJSON);
+      addTasksMain(parsedResponse);
     } catch (error) {
-        console.error("Error occurred while generating response:", error);
-        Alert.alert(
+      console.error("Error parsing the JSON response:", error);
+      Alert.alert(
         "Error",
-        "Failed to connect to the server. Please try again."
-        );
+        "Failed to process the response. Please try again."
+      );
     }
+  } catch (error) {
+    console.error("Error occurred while generating response:", error);
+    Alert.alert(
+      "Error",
+      "Failed to connect to the server. Please try again."
+    );
+  } finally {
+    setIsProcessing(false);
+  }
 };
